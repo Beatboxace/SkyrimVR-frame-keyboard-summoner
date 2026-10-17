@@ -4,6 +4,12 @@
 
 An SKSEVR plugin. No game files are edited, no ESP, no load order slot.
 
+## Download
+
+**[Get it on Nexus Mods](https://www.nexusmods.com/skyrimspecialedition/mods/195728)** (recommended: one-click install with Mod Organizer 2 or Vortex).
+
+The same zip is also in this repo under [`dist/`](dist/), or you can [build it from source](#building-from-source).
+
 ---
 
 ## The problem
