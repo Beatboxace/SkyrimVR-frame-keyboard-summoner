@@ -83,6 +83,14 @@ static void PopUtf8(std::string& s)
     }
 }
 
+// Number of UTF-8 characters (lead bytes), so "é" (2 bytes) counts as one key.
+static size_t Utf8Length(const std::string& s)
+{
+    size_t n = 0;
+    for (unsigned char c : s) n += (c & 0xC0) != 0x80;
+    return n;
+}
+
 // Open the plain keyboard, the one that works on the Steam Frame, and start a fresh accumulator.
 static vr::EVROverlayError OpenKeyboard(vr::IVROverlay* o, vr::EGamepadTextInputMode inputMode,
     vr::EGamepadTextInputLineMode lineMode, const char* desc, uint32_t maxChars, const char* existing,
@@ -126,8 +134,9 @@ static void OnKeyboardChar(void* self)
 
     // More than one character in the buffer means it accumulates by itself (normal keyboard).
     // Two keys in and still a single character means it's the compact one.
+    // Count characters, not bytes: an accented first key is one character but two bytes.
     if (g_kb.mode == 0) {
-        if (key.size() > 1) g_kb.mode = 1;
+        if (Utf8Length(key) > 1) g_kb.mode = 1;
         else if (g_kb.keys >= 2) g_kb.mode = 2;
     }
 
@@ -175,6 +184,8 @@ static uint32_t HkGetKeyboardText(void* self, char* buf, uint32_t cch)
     // Nothing typed: leave SteamVR's answer alone, the game then keeps its default name.
     if (g_kb.active && g_kb.mode != 1 && !g_kb.text.empty() && buf && cch > 0) {
         size_t n = g_kb.text.size() < cch - 1 ? g_kb.text.size() : cch - 1;
+        // If it has to be cut, don't cut an accented letter in half.
+        while (n > 0 && n < g_kb.text.size() && ((unsigned char)g_kb.text[n] & 0xC0) == 0x80) --n;
         memcpy(buf, g_kb.text.data(), n);
         buf[n] = '\0';
         r = (uint32_t)n;

@@ -86,7 +86,8 @@ static float GetFloat(const Values& v, const char* key, float def, float lo, flo
     auto it = v.find(key);
     if (it == v.end() || it->second.empty()) return def;
     float f = (float)atof(it->second.c_str());
-    return f < lo ? lo : (f > hi ? hi : f);
+    if (!(f >= lo)) return lo; // also catches "nan"
+    return f > hi ? hi : f;
 }
 
 // A single letter or digit, e.g. "K". Anything else keeps the default.
