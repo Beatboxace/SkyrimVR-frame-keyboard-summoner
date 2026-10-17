@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="nexus/Frame%20Keyboard%20Summoner%20Banner.png" alt="Frame Keyboard Summoner banner" width="100%">
+</p>
+
 # Frame Keyboard Summoner
 
 **Fixes Skyrim VR getting stuck at the character name (and other text prompts) on the Valve Steam Frame.**
