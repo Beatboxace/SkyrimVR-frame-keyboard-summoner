@@ -1,0 +1,67 @@
+[size=5][b]Frame Keyboard Summoner[/b][/size]
+[b]Fixes Skyrim VR getting stuck at the character name prompt on the Valve Steam Frame.[/b]
+An SKSEVR plugin. No ESP, no game files edited.
+
+[b]Open source:[/b] the full source code is on [url=https://github.com/Beatboxace/SkyrimVR-frame-keyboard-summoner]GitHub[/url], so you can see exactly what the DLL does or build it yourself.
+[i]This mod was built quickly with AI assistance, then reviewed and tested in the headset by a human. The source is there for anyone to check.[/i]
+
+[size=4][b]The problem[/b][/size]
+When you press OK to name your character, the controller turns into a laser pointer but [b]no keyboard appears[/b] on the Steam Frame, and the game waits forever.
+
+Skyrim VR asks SteamVR for a keyboard attached to its menu overlay. On the Frame, SteamVR accepts the request but never shows that keyboard. The standard SteamVR keyboard does work, and the game just never asks for it.
+
+[size=4][b]What this mod does[/b][/size]
+[list]
+[*][b]Swaps the keyboard:[/b] opens the standard SteamVR keyboard instead, with the game's settings (max length, default name).
+[*][b]Rebuilds your text:[/b] the compact Frame keyboard only reports the last key, so the mod records every keypress (backspace included) and gives the game the full name.
+[*][b]Shows what you type:[/b] a small box above the keyboard displays your text, since the compact keyboard has no text field.
+[/list]
+Press the [b]checkmark[/b] key to confirm. Confirm with nothing typed to keep the default name.
+
+[size=4][b]Requirements[/b][/size]
+[list]
+[*]Skyrim VR (1.4.15)
+[*][url=https://skse.silverlock.org/]SKSEVR[/url]
+[*]SteamVR (Steam Frame streaming through SteamVR). Could work in other scenarios but untested.
+[/list]
+[b]Not compatible with OpenComposite[/b] (it has no SteamVR keyboard or overlays).
+It doesn't touch game code, only SteamVR's keyboard functions, so it doesn't need the Address Library.
+
+[size=4][b]Installation[/b][/size]
+[b]Mod Organizer 2:[/b] Install a new mod from an archive, pick the zip, enable it. Priority doesn't matter. Launch through SKSE.
+[b]Vortex:[/b] install, enable, deploy.
+[b]Manual:[/b] extract into [i]Skyrim VR\Data[/i] so that [i]Data\SKSE\Plugins\FrameKeyboardSummoner.dll[/i] exists.
+
+[size=4][b]Configuration[/b][/size]
+[i]SKSE\Plugins\FrameKeyboardSummoner.ini[/i] (with MO2: right-click the mod > Open in Explorer). Restart the game after editing.
+[list]
+[*][b][General] DebugLog[/b] (0): 1 logs every keypress, for bug reports.
+[*][b][Keyboard] Enabled[/b] (1): 0 turns the whole plugin off.
+[*][b][TextOverlay] Enabled[/b] (1): show the typed-text box.
+[*][b][TextOverlay] FollowHead[/b] (0): 0 = box stays where you looked, 1 = follows your head.
+[*][b][TextOverlay] WidthMeters / DistanceMeters / OffsetX / OffsetY[/b] (0.6 / 1.0 / 0.0 / -0.03): box size and position.
+[*][b][Hotkeys] Enabled[/b] (0): emergency hotkeys, see below.
+[/list]
+
+[size=4][b]Emergency hotkeys (off by default)[/b][/size]
+Set [b][Hotkeys] Enabled=1[/b] to get [b]Ctrl+Alt+K[/b] (open the keyboard) and [b]Ctrl+Alt+H[/b] (close it) on the PC keyboard. Keys can be changed in the INI. When disabled, nothing checks the keyboard at all.
+[color=#ff9900][b]Use them only while the game is waiting at a text prompt.[/b][/color] Summoning at another moment can make the game take your text as the answer to its next prompt and skip steps.
+
+[size=4][b]Files & logs[/b][/size]
+[list]
+[*]Plugin + INI: [i]Data\SKSE\Plugins\[/i] (inside the mod folder with MO2). The INI is never written by the mod, so nothing lands in MO2's overwrite.
+[*]Log: [i]Documents\My Games\Skyrim VR\SKSE\FrameKeyboardSummoner.log[/i], overwritten each launch.
+[/list]
+For bug reports: set DebugLog=1, reproduce once, attach the log.
+
+[size=4][b]Troubleshooting[/b][/size]
+[list]
+[*][b]No log at all:[/b] you're not launching through SKSE.
+[*][b]Log says the patch failed or openvr_api.dll is missing:[/b] a stray [i]openvr_api.dll[/i] (often left over from OpenComposite) is replacing SteamVR's. Check the game folder and MO2 [i]overwrite\Root[/i], then verify game files in Steam.
+[*][b]Text box overlaps the keyboard:[/b] adjust OffsetY / DistanceMeters, or disable it.
+[*]Any other problems? Let me know, I might be able to help/patch.
+[/list]
+
+[size=4][b]Source & license[/b][/size]
+Open source (MIT) on GitHub: [url=https://github.com/Beatboxace/SkyrimVR-frame-keyboard-summoner]SkyrimVR-frame-keyboard-summoner[/url]
+Uses MinHook (BSD-2) and the OpenVR SDK headers (BSD-3). Thanks to the SKSEVR team.

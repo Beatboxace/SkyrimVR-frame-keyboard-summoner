@@ -1,0 +1,7 @@
+{
+    // IntelliSense takes include paths and defines (openvr.h, MinHook.h, generated version.h)
+    // from the CMake configuration instead of guessing.
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cmake.sourceDirectory": "${workspaceFolder}",
+    "cmake.buildDirectory": "${workspaceFolder}/build"
+}
